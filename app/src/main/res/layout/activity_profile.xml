@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/appBarCoordinator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/profileAppBar"
+        android:layout_width="match_parent"
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 2198a3f... Change EditProfile UI/UX. Push Map to a new Screen
+        android:layout_height="300dp"
+=======
+        android:layout_height="@dimen/size_300dp"
+>>>>>>> 1335be7... Refactor resources
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:fitsSystemWindows="true"
+        android:fadeScrollbars="false">
+<<<<<<< HEAD
+=======
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme"
+=======
+        android:layout_height="250dp"
+>>>>>>> e0a7c7b... ready
+        android:fitsSystemWindows="true">
+>>>>>>> 8eeaa9a... add collapsing layout
+=======
+>>>>>>> 2198a3f... Change EditProfile UI/UX. Push Map to a new Screen
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/profileCollapsingToolbar"
+                android:layout_width="match_parent"
+<<<<<<< HEAD
+<<<<<<< HEAD
+                android:layout_height="match_parent"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+                android:fitsSystemWindows="true"
+                app:contentScrim="?attr/colorPrimary"
+                app:expandedTitleMarginStart="@dimen/dimen_48dp"
+                app:expandedTitleMarginEnd="@dimen/dimen_64dp"
+                android:scrollbarFadeDuration="1"
+                android:fadeScrollbars="false">
+<<<<<<< HEAD
+
+            <ImageView
+                android:id="@+id/headerLogo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:fitsSystemWindows="true"
+                app:layout_collapseMode="parallax"
+                />
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/profileToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@null"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="pin"/>
+=======
+                android:layout_height="300dp"
+=======
+                android:layout_height="match_parent"
+                app:contentScrim="?attr/colorPrimary"
+>>>>>>> e0a7c7b... ready
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+=======
+>>>>>>> 2198a3f... Change EditProfile UI/UX. Push Map to a new Screen
+
+            <ImageView
+                android:id="@+id/headerLogo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:fitsSystemWindows="true"
+                app:layout_collapseMode="parallax"
+                />
+
+<<<<<<< HEAD
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+<<<<<<< HEAD
+<<<<<<< HEAD
+                    app:layout_collapseMode="pin" />
+>>>>>>> 8eeaa9a... add collapsing layout
+=======
+=======
+                    android:background="@null"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+>>>>>>> 2198a3f... Change EditProfile UI/UX. Push Map to a new Screen
+                    app:layout_collapseMode="pin"/>
+>>>>>>> e0a7c7b... ready
+=======
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/profileToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@null"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="pin"/>
+>>>>>>> 080411d... Capture photo from camera
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+        </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nestedScroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="@dimen/dimen_16dp">
+
+            <TextView
+                android:id="@+id/tasksNumber"
+                android:layout_width="match_parent"
+<<<<<<< HEAD
+<<<<<<< HEAD
+                android:layout_height="wrap_content"
+=======
+                android:layout_height="0dp"
+                android:layout_weight="2"
+>>>>>>> 8eeaa9a... add collapsing layout
+=======
+                android:layout_height="wrap_content"
+<<<<<<< HEAD
+>>>>>>> e0a7c7b... ready
+                android:text="Будущая карта"
+                android:textSize="16dp"
+=======
+                android:textSize="16sp"
+>>>>>>> 1335be7... Refactor resources
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        app:layout_anchor="@id/profileAppBar"
+        app:layout_anchorGravity="bottom|right|end"
+        style="@style/Widget.Design.FloatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+        android:layout_margin="32dp"
+        android:src="@android:drawable/ic_menu_edit" />
+=======
+        android:layout_margin="@dimen/dimen_16dp"
+        android:src="@android:drawable/ic_menu_edit"/>
+>>>>>>> 8eeaa9a... add collapsing layout
+=======
+        android:layout_margin="32dp"
+=======
+        android:layout_margin="@dimen/dimen_32dp"
+>>>>>>> 1335be7... Refactor resources
+        android:src="@android:drawable/ic_menu_edit" />
+>>>>>>> 2198a3f... Change EditProfile UI/UX. Push Map to a new Screen
+
+</android.support.design.widget.CoordinatorLayout>
+

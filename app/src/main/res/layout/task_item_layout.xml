@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+<<<<<<< HEAD
+<<<<<<< HEAD
+    android:layout_height="wrap_content"
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    android:layout_height="match_parent"
+>>>>>>> d9e6e1c... Implmenting List
+=======
+    android:layout_height="wrap_content"
+>>>>>>> d00ba80... Implement DatePicker. Implement Category Spinner
+    android:orientation="vertical">
+=======
+    android:orientation="vertical"
+    android:layout_marginBottom="@dimen/dimen_8dp">
+>>>>>>> 1d51cc4... Models refactoring. Check DB data sent OK
+=======
+    android:orientation="vertical">
+>>>>>>> 762f2c5... Add status NEW when creating tasks. Add ItemDecorator to tasks recyclerview. Fix margins. Add task random title and body
+
+    <TextView
+        android:id="@+id/titleTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_red_dark"
+        />
+
+    <TextView
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 966923f... restructuring
+        android:id="@+id/categoryTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_red_dark"
+        />
+
+    <TextView
+<<<<<<< HEAD
+=======
+>>>>>>> d9e6e1c... Implmenting List
+=======
+>>>>>>> 966923f... restructuring
+        android:id="@+id/bodyTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 966923f... restructuring
+    <TextView
+        android:id="@+id/dueTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="1-1-2050"
+        android:textColor="@android:color/holo_red_dark"
+        />
+=======
+        <TextView
+            android:id="@+id/dueTV"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_red_dark" />
+
+        <TextView
+            android:id="@+id/timeTV"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="end"/>
+
+    </LinearLayout>
+>>>>>>> 1335be7... Refactor resources
+
+<<<<<<< HEAD
+=======
+>>>>>>> d9e6e1c... Implmenting List
+=======
+>>>>>>> 966923f... restructuring
+</LinearLayout>

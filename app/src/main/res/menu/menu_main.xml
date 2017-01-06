@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_profile"
+        android:title="@string/action_profile"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_logout"
+        android:title="@string/action_log_out"
+        app:showAsAction="never" />
+<<<<<<< HEAD:app/src/main/res/menu/menu_main.xml
+<<<<<<< HEAD:app/src/main/res/menu/menu_main.xml
+
+=======
+>>>>>>> d184d09... Task creation and DB saving added:app/src/main/res/menu/main.xml
+=======
+
+<<<<<<< HEAD:app/src/main/res/menu/menu_main.xml
+    <item
+        android:id="@+id/action_profile"
+        android:title="Profile"
+        app:showAsAction="never" />
+>>>>>>> 8eeaa9a... add collapsing layout:app/src/main/res/menu/main.xml
+=======
+>>>>>>> aee538b... bugfix:app/src/main/res/menu/menu_main.xml
+</menu>

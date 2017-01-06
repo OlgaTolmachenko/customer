@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    android:id="@+id/whiteScreen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone"
+<<<<<<< HEAD
+<<<<<<< HEAD
+    android:background="@android:color/white"
+=======
+    android:background="#fff"
+>>>>>>> 64f37b7... Add progressBars
+=======
+    android:background="@android:color/white"
+>>>>>>> 74fd957... Fix Role. Fix Task
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ProgressBar
+        android:id="@+id/taskProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:layout_gravity="center"
+        android:visibility="invisible" />
+
+</FrameLayout>

@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+    <android.support.design.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/appBarCoordinator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/editProfileAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_250dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:fitsSystemWindows="true">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/profileCollapsingToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_scrollFlags="exitUntilCollapsed|snap"
+                android:fitsSystemWindows="true"
+                app:contentScrim="?attr/colorPrimary">
+
+<<<<<<< HEAD
+                <ImageView
+                    android:id="@+id/editLogo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:fitsSystemWindows="true" />
+
+                <EditText
+                    android:id="@+id/companyNameField"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_40dp"
+                    android:layout_gravity="bottom"
+                    android:hint="@string/enter_your_legal_name"
+                    android:paddingEnd="@dimen/dimen_100dp"
+                    android:paddingStart="@dimen/dimen_16dp"
+                    android:background="@null"/>
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/editProfileToolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@null"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+=======
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:background="#eee"
+<<<<<<< HEAD
+            android:orientation="horizontal"/>
+>>>>>>> cf08e23... map implemented
+
+        </android.support.design.widget.AppBarLayout>
+=======
+            android:orientation="horizontal"
+            android:layout_margin="@dimen/dimen_16dp"/>
+>>>>>>> 330f4ea... map ready
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nestedScroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+<<<<<<< HEAD
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+=======
+            android:layout_weight="0.2"
+=======
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+=======
+>>>>>>> 2198a3f... Change EditProfile UI/UX. Push Map to a new Screen
+
+=======
+>>>>>>> 080411d... Capture photo from camera
+    <android.support.design.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/appBarCoordinator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+<<<<<<< HEAD
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="match_parent"
+>>>>>>> 64f37b7... Add progressBars
+            android:orientation="vertical">
+>>>>>>> cf08e23... map implemented
+
+<<<<<<< HEAD
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_margin="@dimen/dimen_16dp">
+
+                <TextView
+                    android:id="@+id/addressTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="@dimen/dimen_16dp"
+                    android:gravity="center_vertical"
+                    android:drawableStart="@android:drawable/ic_menu_myplaces"/>
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/photoFab"
+            app:layout_anchor="@id/editProfileAppBar"
+            app:layout_anchorGravity="bottom|right|end"
+            style="@style/Widget.Design.FloatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dimen_32dp"
+            android:src="@android:drawable/ic_menu_camera" />
+
+        <FrameLayout
+            android:id="@+id/whiteScreen"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="@android:color/white">
+
+            <ProgressBar
+                android:id="@+id/taskProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:layout_gravity="center"
+                android:visibility="invisible" />
+=======
+            <ImageView
+                android:id="@+id/logo"
+=======
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/editProfileAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:fitsSystemWindows="true">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/profileCollapsingToolbar"
+>>>>>>> 2198a3f... Change EditProfile UI/UX. Push Map to a new Screen
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_scrollFlags="exitUntilCollapsed|snap"
+                android:fitsSystemWindows="true"
+                app:contentScrim="?attr/colorPrimary">
+
+                <ImageView
+                    android:id="@+id/editLogo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:fitsSystemWindows="true" />
+
+                <EditText
+                    android:id="@+id/companyNameField"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom"
+                    android:hint="Enter your legal name"
+                    android:paddingRight="100dp"
+                    android:paddingLeft="@dimen/dimen_16dp"
+                    android:background="@null"/>
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/editProfileToolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@null"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nestedScroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_margin="@dimen/dimen_16dp">
+
+                <TextView
+                    android:id="@+id/addressTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="@dimen/dimen_16dp"
+                    android:gravity="center_vertical"
+                    android:drawableLeft="@android:drawable/ic_menu_myplaces"/>
+
+            </LinearLayout>
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 64f37b7... Add progressBars
+
+        </FrameLayout>
+=======
+
+        </android.support.v4.widget.NestedScrollView>
+>>>>>>> 080411d... Capture photo from camera
+
+<<<<<<< HEAD
+    </android.support.design.widget.CoordinatorLayout>
+=======
+        </android.support.v4.widget.NestedScrollView>
+>>>>>>> 2198a3f... Change EditProfile UI/UX. Push Map to a new Screen
+
+<<<<<<< HEAD
+=======
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/photoFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        android:src="@drawable/ic_menu_camera"
+        app:backgroundTint="#fff"
+        app:layout_anchor="@id/logo"
+        app:layout_anchorGravity="bottom|center"/>
+>>>>>>> cf08e23... map implemented
+
+=======
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/photoFab"
+            app:layout_anchor="@id/editProfileAppBar"
+            app:layout_anchorGravity="bottom|right|end"
+            style="@style/Widget.Design.FloatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="32dp"
+            android:src="@android:drawable/ic_menu_camera" />
+
+        <FrameLayout
+            android:id="@+id/whiteScreen"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="@android:color/white">
+
+            <ProgressBar
+                android:id="@+id/taskProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:layout_gravity="center"
+                android:visibility="invisible" />
+
+        </FrameLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+
+<<<<<<< HEAD
+</FrameLayout>
+>>>>>>> 64f37b7... Add progressBars
+=======
+>>>>>>> 2198a3f... Change EditProfile UI/UX. Push Map to a new Screen
