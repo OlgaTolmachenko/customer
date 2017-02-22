@@ -8,48 +8,16 @@ import android.view.ViewGroup;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-<<<<<<< HEAD
-<<<<<<< HEAD
 import com.mobidev.taskcompany.R;
 import com.mobidev.taskcompany.model.Task;
-<<<<<<< HEAD
-import com.mobidev.taskcompany.util.TaskAdapter;
-import com.mobidev.taskcompany.util.TaskDecorator;
-<<<<<<< HEAD
-=======
-import com.mobidev.taskcompany.company.R;
-=======
-import com.mobidev.taskcompany.R;
->>>>>>> 3497b4d... refactoring
-import com.mobidev.taskcompany.model.Task;
-import com.mobidev.taskcompany.util.TaskAdapter;
->>>>>>> 64f37b7... Add progressBars
-=======
->>>>>>> 762f2c5... Add status NEW when creating tasks. Add ItemDecorator to tasks recyclerview. Fix margins. Add task random title and body
-=======
 import com.mobidev.taskcompany.util.Constants;
->>>>>>> 1335be7... Refactor resources
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-/**
- * Created by olga on 23.01.17.
- */
-
->>>>>>> 64f37b7... Add progressBars
-=======
->>>>>>> 3497b4d... refactoring
-public class TasksByNameFragment extends Fragment {
-=======
 public class TasksByNameFragment extends BaseFragment {
->>>>>>> 1335be7... Refactor resources
 
     private ArrayList<Task> tasks;
 
@@ -83,25 +51,7 @@ public class TasksByNameFragment extends BaseFragment {
             });
         }
 
-<<<<<<< HEAD
-        TaskAdapter taskAdapter = new TaskAdapter(tasks);
-        RecyclerView taskRecyclerView = (RecyclerView) rootView.findViewById(R.id.taskRecycler);
-        taskRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-        taskRecyclerView.setAdapter(taskAdapter);
-<<<<<<< HEAD
-<<<<<<< HEAD
-        RecyclerView.ItemDecoration taskDecor = new TaskDecorator(getActivity().getDrawable(R.drawable.list_divider));
-        taskRecyclerView.addItemDecoration(taskDecor);
-=======
-
->>>>>>> 64f37b7... Add progressBars
-=======
-        RecyclerView.ItemDecoration taskDecor = new TaskDecorator(getActivity().getDrawable(R.drawable.list_divider));
-        taskRecyclerView.addItemDecoration(taskDecor);
->>>>>>> 762f2c5... Add status NEW when creating tasks. Add ItemDecorator to tasks recyclerview. Fix margins. Add task random title and body
-=======
         setUpRecycler(rootView, tasks);
->>>>>>> 1335be7... Refactor resources
         return rootView;
     }
 

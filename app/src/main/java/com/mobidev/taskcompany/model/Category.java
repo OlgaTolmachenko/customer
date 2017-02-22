@@ -1,15 +1,5 @@
 package com.mobidev.taskcompany.model;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-/**
- * Created by olga on 17.01.17.
- */
-
->>>>>>> 966923f... restructuring
-=======
->>>>>>> 3497b4d... refactoring
 public enum Category {
 
     CATEGORY1("Category1"),

@@ -11,24 +11,11 @@ import android.view.ViewGroup;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-<<<<<<< HEAD
-<<<<<<< HEAD
 import com.mobidev.taskcompany.R;
 import com.mobidev.taskcompany.model.Task;
 import com.mobidev.taskcompany.util.Constants;
 import com.mobidev.taskcompany.util.TaskAdapter;
 import com.mobidev.taskcompany.util.TaskDecorator;
-<<<<<<< HEAD
-=======
-import com.mobidev.taskcompany.company.R;
-=======
-import com.mobidev.taskcompany.R;
->>>>>>> 3497b4d... refactoring
-import com.mobidev.taskcompany.model.Task;
-import com.mobidev.taskcompany.util.TaskAdapter;
->>>>>>> dabb3d3... Implement taskpager fragments
-=======
->>>>>>> 762f2c5... Add status NEW when creating tasks. Add ItemDecorator to tasks recyclerview. Fix margins. Add task random title and body
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -38,30 +25,9 @@ import java.util.List;
 
 import static android.R.attr.defaultValue;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-public class TasksByCategoryFragment extends Fragment {
-=======
 public class TasksByCategoryFragment extends BaseFragment {
->>>>>>> 1335be7... Refactor resources
 
     private ArrayList<Task> tasks;
-=======
-/**
- * Created by Olga Tolmachenko on 23.01.17.
- */
-
-=======
->>>>>>> 3497b4d... refactoring
-public class TasksByCategoryFragment extends Fragment {
-
-    private ArrayList<Task> tasks;
-<<<<<<< HEAD
-    private TaskAdapter taskAdapter;
->>>>>>> dabb3d3... Implement taskpager fragments
-=======
->>>>>>> 64f37b7... Add progressBars
 
     public static TasksByCategoryFragment newInstance(String taskList) {
         TasksByCategoryFragment myFragment = new TasksByCategoryFragment();
@@ -92,34 +58,7 @@ public class TasksByCategoryFragment extends Fragment {
             });
         }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        TaskAdapter taskAdapter = new TaskAdapter(tasks);
-=======
-        taskAdapter = new TaskAdapter(tasks);
->>>>>>> dabb3d3... Implement taskpager fragments
-=======
-        TaskAdapter taskAdapter = new TaskAdapter(tasks);
->>>>>>> 64f37b7... Add progressBars
-
-        RecyclerView taskRecyclerView = (RecyclerView) rootView.findViewById(R.id.taskRecycler);
-        taskRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-        taskRecyclerView.setAdapter(taskAdapter);
-<<<<<<< HEAD
-<<<<<<< HEAD
-        RecyclerView.ItemDecoration taskDecor = new TaskDecorator(getActivity().getDrawable(R.drawable.list_divider));
-        taskRecyclerView.addItemDecoration(taskDecor);
-=======
-
->>>>>>> dabb3d3... Implement taskpager fragments
-=======
-        RecyclerView.ItemDecoration taskDecor = new TaskDecorator(getActivity().getDrawable(R.drawable.list_divider));
-        taskRecyclerView.addItemDecoration(taskDecor);
->>>>>>> 762f2c5... Add status NEW when creating tasks. Add ItemDecorator to tasks recyclerview. Fix margins. Add task random title and body
-=======
         setUpRecycler(rootView, tasks);
->>>>>>> 1335be7... Refactor resources
         return rootView;
     }
 

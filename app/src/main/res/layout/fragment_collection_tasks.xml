@@ -1,21 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+              android:orientation="vertical" android:layout_width="match_parent"
+              android:layout_height="match_parent"
     >
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/taskRecycler"
         android:layout_width="match_parent"
-<<<<<<< HEAD
-<<<<<<< HEAD
         android:layout_height="wrap_content"/>
-=======
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_16dp"/>
->>>>>>> dabb3d3... Implement taskpager fragments
-=======
-        android:layout_height="wrap_content"/>
->>>>>>> 762f2c5... Add status NEW when creating tasks. Add ItemDecorator to tasks recyclerview. Fix margins. Add task random title and body
 
 </LinearLayout>

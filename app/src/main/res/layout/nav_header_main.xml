@@ -1,63 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<<<<<<< HEAD
-<<<<<<< HEAD
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-=======
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
->>>>>>> 3bae9b8... NavView Image and Text plased.
-=======
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
->>>>>>> 1d51cc4... Models refactoring. Check DB data sent OK
-    android:id="@+id/header"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/nav_header_height"
-    android:gravity="bottom"
-    android:orientation="vertical"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+             android:id="@+id/header"
+             android:layout_width="match_parent"
+             android:layout_height="@dimen/nav_header_height"
+             android:gravity="bottom"
+             android:orientation="vertical"
+             android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
         android:id="@+id/nav_logo"
-<<<<<<< HEAD
-<<<<<<< HEAD
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-=======
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-=======
-        android:layout_width="match_parent"
-<<<<<<< HEAD
-        android:layout_height="match_parent"
->>>>>>> 1d51cc4... Models refactoring. Check DB data sent OK
-        android:paddingTop="@dimen/nav_header_vertical_spacing" />
->>>>>>> 3bae9b8... NavView Image and Text plased.
-=======
-        android:layout_height="match_parent"/>
->>>>>>> 35d04a3... Fix Camera. Fix Location
 
     <TextView
         android:id="@+id/nav_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        android:layout_marginLeft="@dimen/dimen_16dp"
-        android:layout_gravity="bottom"/>
-=======
-        android:textColor="@android:color/black"/>
->>>>>>> 3bae9b8... NavView Image and Text plased.
-=======
-        android:textColor="@android:color/black"
-=======
-        android:layout_marginLeft="@dimen/dimen_16dp"
->>>>>>> f8f400e... fixes
-=======
         android:layout_marginStart="@dimen/dimen_16dp"
->>>>>>> 1335be7... Refactor resources
         android:layout_gravity="bottom"/>
->>>>>>> 1d51cc4... Models refactoring. Check DB data sent OK
 
 </FrameLayout>

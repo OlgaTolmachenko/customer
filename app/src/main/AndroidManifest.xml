@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-<<<<<<< HEAD
-<<<<<<< HEAD
-    package="com.mobidev.taskcompany">
-=======
-    package="com.mobidev.taskcompany.company">
->>>>>>> 6b47303... multiple login
-=======
-    package="com.mobidev.taskcompany">
->>>>>>> 3497b4d... refactoring
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.mobidev.taskcompany">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -17,15 +9,9 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.CAMERA" />
-<<<<<<< HEAD
 
     <uses-feature android:name="android.hardware.camera"
-        android:required="true" />
-=======
->>>>>>> 2a78416... temp
-
-    <uses-feature android:name="android.hardware.camera"
-        android:required="true" />
+                  android:required="true" />
 
     <application
         android:name="com.mobidev.taskcompany.TaskApp"
@@ -33,8 +19,6 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-<<<<<<< HEAD
-<<<<<<< HEAD
         tools:replace="android:supportsRtl">
 
         <provider
@@ -46,16 +30,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"/>
         </provider>
-<<<<<<< HEAD
-=======
-        tools:replace="android:supportsRtl"
-        android:theme="@style/AppTheme">
->>>>>>> 6b47303... multiple login
-=======
-        tools:replace="android:supportsRtl">
->>>>>>> e0a7c7b... ready
-=======
->>>>>>> 2a78416... temp
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -63,35 +37,19 @@
 
         <activity
             android:name="com.mobidev.taskcompany.activity.MainActivity"
-<<<<<<< HEAD
-<<<<<<< HEAD
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-=======
->>>>>>> d184d09... Task creation and DB saving added
-=======
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
->>>>>>> aee538b... bugfix
             android:label="Customer Tasks"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-<<<<<<< HEAD
-<<<<<<< HEAD
                 <category android:name="android.intent.category.LAUNCHER" />
-<<<<<<< HEAD
-=======
-                <category android:name="android.intent.category.DEFAULT" />
->>>>>>> 9830fd9... temp
             </intent-filter>
         </activity>
 
         <activity
             android:name="com.mobidev.taskcompany.activity.EditProfileActivity"
-<<<<<<< HEAD
-<<<<<<< HEAD
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme">
@@ -100,93 +58,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mobidev.taskcompany.activity.ProfileActivity" />
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-=======
->>>>>>> d00ba80... Implement DatePicker. Implement Category Spinner
-            </intent-filter>
-        </activity>
-
-        <activity
-<<<<<<< HEAD
-<<<<<<< HEAD
-            android:name="com.mobidev.taskcompany.activity.CreateTaskActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:label="Create Task"
-=======
-            android:name="com.mobidev.taskcompany.activity.SignInActivity"
-            android:label="Sign In"
->>>>>>> d184d09... Task creation and DB saving added
-            android:theme="@style/AppTheme">
-
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mobidev.taskcompany.activity.MainActivity" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-<<<<<<< HEAD
-        <activity android:name="com.mobidev.taskcompany.activity.ProfileActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyMaterialTheme">
-
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mobidev.taskcompany.activity.MainActivity" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-=======
-                <category android:name="android.intent.category.LAUNCHER" />
->>>>>>> 35d04a3... Fix Camera. Fix Location
-            </intent-filter>
-        </activity>
-
-        <activity android:name="com.mobidev.taskcompany.activity.BaseMapActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-=======
-        <activity
-=======
->>>>>>> 64f37b7... Add progressBars
-            android:name="com.mobidev.taskcompany.activity.EditProfileActivity"
-            android:label="Edit Profile"
-<<<<<<< HEAD
->>>>>>> d184d09... Task creation and DB saving added
-            android:theme="@style/AppTheme">
-
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mobidev.taskcompany.activity.EditProfileActivity" />
-
-=======
-=======
->>>>>>> 080411d... Capture photo from camera
-=======
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
->>>>>>> aee538b... bugfix
-            android:theme="@style/MyMaterialTheme">
-<<<<<<< HEAD
->>>>>>> 2198a3f... Change EditProfile UI/UX. Push Map to a new Screen
-=======
-
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mobidev.taskcompany.activity.ProfileActivity" />
-
->>>>>>> f8f400e... fixes
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -213,9 +84,9 @@
         </activity>
 
         <activity android:name="com.mobidev.taskcompany.activity.ProfileActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyMaterialTheme">
+                  android:configChanges="orientation"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/MyMaterialTheme">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -229,9 +100,9 @@
         </activity>
 
         <activity android:name="com.mobidev.taskcompany.activity.BaseMapActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme">
+                  android:configChanges="orientation"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/AppTheme">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
