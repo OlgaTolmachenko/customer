@@ -45,7 +45,7 @@
     <string name="text_location">Location: %s</string>
     <string name="text_tasks_count">Tasks count: %d</string>
     <string name="text_category">Category: %s</string>
-    <string name="text_due">"Due date: "</string>
+    <string name="text_due">Due date: %s</string>
     <string name="title">Title</string>
     <string name="body">Body</string>
     <string name="tap_to_pick_due_date">Tap to pick due date:</string>

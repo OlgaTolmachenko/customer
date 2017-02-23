@@ -59,7 +59,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     private EditText nameField;
     private FloatingActionButton photoFab;
     private TextView addressTV;
-    private String mCurrentPhotoPath;
+    private String currentPhotoPath;
     private LatLng location;
 
     private MenuItem saveMenuItem = null;
@@ -128,11 +128,11 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void requestPermissions() {
-        ActivityCompat.requestPermissions(EditProfileActivity.this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.MANAGE_DOCUMENTS}, Constants.RequestCodes.REQUEST_STORAGE_PERMISSION);
+        ActivityCompat.requestPermissions(EditProfileActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.MANAGE_DOCUMENTS}, Constants.RequestCodes.REQUEST_READ_STORAGE_PERMISSION);
     }
 
     private void requestCameraPermissions() {
-        ActivityCompat.requestPermissions(EditProfileActivity.this, new String[]{Manifest.permission.CAMERA}, Constants.RequestCodes.REQUEST_CAMERA_PERMISSION);
+        ActivityCompat.requestPermissions(EditProfileActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.RequestCodes.REQUEST_CAMERA_PERMISSION);
     }
 
     private void setAddressTV(String address) {
@@ -215,7 +215,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         }
         if (requestCode == Constants.RequestCodes.REQUEST_CAMERA && resultCode == RESULT_OK) {
             galleryAddPic();
-            Uri contentUri = Uri.fromFile(new File(mCurrentPhotoPath));
+            Uri contentUri = Uri.fromFile(new File(currentPhotoPath));
             setupGlide(this, contentUri.toString(), logoView);
             sendLogoToStorage(contentUri);
         }
@@ -230,13 +230,19 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+        File imagesFolder = new File(Environment.getExternalStorageDirectory(), "TasksCustomer");
+        imagesFolder.mkdirs();
+
+
         File image = File.createTempFile(
                 imageFileName,
                 ".jpg",
                 storageDir
         );
 
-        mCurrentPhotoPath = image.getAbsolutePath();
+        http://stackoverflow.com/questions/12995185/android-taking-photos-and-saving-them-with-a-custom-name-to-a-custom-destinati
+        currentPhotoPath = image.getAbsolutePath();
         return image;
     }
 
@@ -262,7 +268,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
 
     private void galleryAddPic() {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        File f = new File(mCurrentPhotoPath);
+        File f = new File(currentPhotoPath);
         Uri contentUri = Uri.fromFile(f);
         mediaScanIntent.setData(contentUri);
         this.sendBroadcast(mediaScanIntent);
@@ -282,7 +288,6 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
             StorageReference logoRef = myStorage.child(Constants.IMG + System.currentTimeMillis() + "." + mime.getExtensionFromMimeType(cR.getType(logo)));
 
             UploadTask uploadTask = logoRef.putFile(logo);
-
             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -379,7 +384,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case Constants.RequestCodes.REQUEST_STORAGE_PERMISSION: {
+            case Constants.RequestCodes.REQUEST_READ_STORAGE_PERMISSION: {
                 if (grantResults.length > 0
                         && Objects.equals(permissions[0], android.Manifest.permission.READ_EXTERNAL_STORAGE)
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -391,6 +396,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
             case Constants.RequestCodes.REQUEST_CAMERA_PERMISSION: {
                 if (grantResults.length > 0
                         && Objects.equals(permissions[0], Manifest.permission.CAMERA)
+                        && Objects.equals(permissions[1], Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                     dispatchTakePictureIntent();

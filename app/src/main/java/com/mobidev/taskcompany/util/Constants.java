@@ -21,7 +21,7 @@ public class Constants {
         public static final int REQUEST_LIBRARY = 0;
         public static final int REQUEST_CAMERA = 1;
         public static final int REQUEST_LOCATION = 2;
-        public static final int REQUEST_STORAGE_PERMISSION = 3;
+        public static final int REQUEST_READ_STORAGE_PERMISSION = 3;
         public static final int REQUEST_CAMERA_PERMISSION = 4;
         public static final int REQUEST_LOCATION_PERMISSION = 5;
         public static final int REQUEST_SIGN_IN = 6;

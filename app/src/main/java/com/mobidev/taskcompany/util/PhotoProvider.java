@@ -18,7 +18,7 @@ import java.util.HashMap;
 public class PhotoProvider extends ContentProvider {
 
     public static final Uri CONTENT_URI = Uri.parse
-            ("content://com.example.camerademo/");
+            ("content://com.mobidev.taskcompany/");
     private static final HashMap<String, String> MIME_TYPES =
             new HashMap<String, String>();
 
