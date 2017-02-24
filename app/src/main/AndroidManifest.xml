@@ -104,10 +104,6 @@
                   android:screenOrientation="portrait"
                   android:theme="@style/AppTheme">
 
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mobidev.taskcompany.activity.EditProfileActivity" />
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

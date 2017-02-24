@@ -60,7 +60,6 @@ public class BaseMapActivity extends BaseActivity implements OnMapReadyCallback,
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        invalidateOptionsMenu();
 
         parentLayout = (CoordinatorLayout) findViewById(R.id.parentLayout);
 
@@ -294,7 +293,9 @@ public class BaseMapActivity extends BaseActivity implements OnMapReadyCallback,
     }
 
     private void setMenuItemVisibility(boolean enabled) {
-        saveMenuItem.setEnabled(enabled);
+        if (saveMenuItem != null) {
+            saveMenuItem.setEnabled(enabled);
+        }
     }
 
     public void showSnackbar(String address) {

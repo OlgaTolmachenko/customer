@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StatFs;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,6 +20,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
@@ -54,13 +57,16 @@ import java.util.Objects;
 
 public class EditProfileActivity extends BaseActivity implements View.OnClickListener {
 
-    private String downloadedPhoto;
+    private Uri downloadedPhoto;
     private ImageView logoView;
     private EditText nameField;
     private FloatingActionButton photoFab;
-    private TextView addressTV;
+    private TextView addressField;
     private String currentPhotoPath;
     private LatLng location;
+    private boolean isFirstTime;
+    private String address;
+    private Uri logo;
 
     private MenuItem saveMenuItem = null;
 
@@ -84,72 +90,63 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         photoFab = (FloatingActionButton) findViewById(R.id.photoFab);
         logoView = (ImageView) findViewById(R.id.editLogo);
         nameField = (EditText) findViewById(R.id.companyNameField);
-        nameField.setBackgroundColor(Color.argb(70, 0, 0, 0));
+        addressField = (TextView) findViewById(R.id.addressTV);
 
-        if (TaskApp.getInstance().getCurrentCustomer() != null && TaskApp.getInstance().getCurrentCustomer().getName() != null) {
+        nameField.setBackgroundColor(Color.argb(70, 0, 0, 0));
+        setScroll(nameField);
+
+        if (TaskApp.getInstance().getCurrentCustomer() == null) {
+            isFirstTime = true;
+        }
+
+        if (!isFirstTime) {
+            setupGlide(this, TaskApp.getInstance().getCurrentCustomer().getLogo(), logoView);
             nameField.setText(TaskApp.getInstance().getCurrentCustomer().getName());
             nameField.setSelection(nameField.getText().length());
         }
 
-        setScroll(nameField);
-
-        if (TaskApp.getInstance().getCurrentCustomer() != null && TaskApp.getInstance().getCurrentCustomer().getLogo() != null) {
-            setupGlide(this, TaskApp.getInstance().getCurrentCustomer().getLogo(), logoView);
-        }
-
+        nameField.addTextChangedListener(getTextWatcher());
         photoFab.setOnClickListener(this);
+        addressField.setOnClickListener(this);
 
-        addressTV = (TextView) findViewById(R.id.addressTV);
-        addressTV.setOnClickListener(this);
+        setAddressField(null);
+    }
 
-        setAddressTV(null);
+    @NonNull
+    private TextWatcher getTextWatcher() {
+        return new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                setOnRegistrationMenuItemVisibility(s.toString(), logo);
+                setOnLoginMenuItemVisibility(s.toString());
+            }
+        };
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
         hideSpinner();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    private void requestPermissions() {
-        ActivityCompat.requestPermissions(EditProfileActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.MANAGE_DOCUMENTS}, Constants.RequestCodes.REQUEST_READ_STORAGE_PERMISSION);
-    }
-
-    private void requestCameraPermissions() {
-        ActivityCompat.requestPermissions(EditProfileActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.RequestCodes.REQUEST_CAMERA_PERMISSION);
-    }
-
-    private void setAddressTV(String address) {
-
-        if (address != null) {
-            addressTV.setText(address);
-            if (TaskApp.getInstance().getCurrentCustomer() != null) {
-                TaskApp.getInstance().getCurrentCustomer().setAddress(address);
+    private void setAddressField(String address) {
+        if (address == null) {
+            if (isFirstTime) {
+                addressField.setText(R.string.text_choose_location);
+            } else {
+                addressField.setText(TaskApp.getInstance().getCurrentCustomer().getAddress());
             }
         } else {
-            if (TaskApp.getInstance().getCurrentCustomer() != null) {
-                addressTV.setText(TaskApp.getInstance().getCurrentCustomer().getAddress());
-            } else {
-                addressTV.setText(R.string.text_choose_location);
-            }
+            addressField.setText(address);
         }
-
     }
 
     private void setScroll(EditText field) {
@@ -161,7 +158,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         saveMenuItem = menu.findItem(R.id.action_save);
-        saveMenuItem.setEnabled(false);
+        setOnLoginMenuItemVisibility(nameField.getText().toString());
         return true;
     }
 
@@ -177,11 +174,11 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         switch (item.getItemId()) {
             case R.id.action_save:
                 showSpinner();
-
-                if (downloadedPhoto != null) {
-                    saveCustomerDataInDB(downloadedPhoto);
-                } else {
-                    saveCustomerDataInDB(TaskApp.getInstance().getCurrentCustomer().getLogo());
+                if (logo != null) {
+                    sendLogoToStorage(logo);
+                }
+                if (downloadedPhoto == null) {
+                    saveCustomerDataInDB(null);
                 }
                 return true;
             default:
@@ -209,20 +206,22 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == Constants.RequestCodes.REQUEST_LIBRARY && resultCode == RESULT_OK) {
-            setupGlide(this, data.getData().toString(), logoView);
-            sendLogoToStorage(data.getData());
+            logo = data.getData();
+            setupGlide(this, logo.toString(), logoView);
 
         }
         if (requestCode == Constants.RequestCodes.REQUEST_CAMERA && resultCode == RESULT_OK) {
             galleryAddPic();
-            Uri contentUri = Uri.fromFile(new File(currentPhotoPath));
-            setupGlide(this, contentUri.toString(), logoView);
-            sendLogoToStorage(contentUri);
+            logo = Uri.fromFile(new File(currentPhotoPath));
+            setupGlide(this, logo.toString(), logoView);
         }
 
         if (requestCode == Constants.RequestCodes.REQUEST_LOCATION && resultCode == RESULT_OK) {
             location = data.getParcelableExtra(Constants.LOCATION);
-            setAddressTV(data.getStringExtra(Constants.ADDRESS));
+            address = data.getStringExtra(Constants.ADDRESS);
+            setAddressField(address);
+            setOnRegistrationMenuItemVisibility(nameField.getText().toString(), logo);
+            setOnLoginMenuItemVisibility(nameField.getText().toString());
         }
     }
 
@@ -241,7 +240,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                 storageDir
         );
 
-        http://stackoverflow.com/questions/12995185/android-taking-photos-and-saving-them-with-a-custom-name-to-a-custom-destinati
+//        http://stackoverflow.com/questions/12995185/android-taking-photos-and-saving-them-with-a-custom-name-to-a-custom-destinati
         currentPhotoPath = image.getAbsolutePath();
         return image;
     }
@@ -267,6 +266,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void galleryAddPic() {
+
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         File f = new File(currentPhotoPath);
         Uri contentUri = Uri.fromFile(f);
@@ -274,10 +274,15 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         this.sendBroadcast(mediaScanIntent);
     }
 
+    long getInternalMemoryAvailable() {
+        StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
+        long bytesAvailable = stat.getFreeBytes();
+        return bytesAvailable / 1048576;
+    }
+
     private void sendLogoToStorage(Uri logo) {
         if (logo != null) {
             showSpinner();
-            saveMenuItem.setEnabled(false);
             FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
 
             MimeTypeMap mime = MimeTypeMap.getSingleton();
@@ -292,10 +297,10 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     if (taskSnapshot != null) {
-                        downloadedPhoto = taskSnapshot.getDownloadUrl().toString();
+                        downloadedPhoto = taskSnapshot.getDownloadUrl();
                     }
-                    hideSpinner();
-                    saveMenuItem.setEnabled(true);
+                    saveCustomerDataInDB(downloadedPhoto.toString());
+                    setOnRegistrationMenuItemVisibility(nameField.getText().toString(), downloadedPhoto);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -306,10 +311,9 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
-    private void saveCustomerDataInDB(String logo) {
-        Customer customer;
-        if (TaskApp.getInstance().getCurrentCustomer() == null) {
-            customer = new Customer(
+    private void saveCustomerDataInDB(@Nullable String logo) {
+        if (isFirstTime) {
+            Customer customer = new Customer(
                     nameField.getText().toString(),
                     TaskApp.getInstance().getCustomerId(),
                     Role.CUSTOMER,
@@ -324,16 +328,23 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
             if (location != null) {
                 TaskApp.getInstance().getCurrentCustomer().setLocation(new TaskLatLng(location.latitude, location.longitude));
             }
-            TaskApp.getInstance().getCurrentCustomer().setLogo(logo);
+            if (logo != null) {
+                TaskApp.getInstance().getCurrentCustomer().setLogo(logo);
+            }
 
-            TaskApp.getInstance().getCurrentCustomer().setAddress(addressTV.getText().toString());
-            customer = TaskApp.getInstance().getCurrentCustomer();
+            TaskApp.getInstance().getCurrentCustomer().setAddress(addressField.getText().toString());
         }
 
-        FirebaseDatabase.getInstance().getReference(Constants.FirebaseReferences.CUSTOMERS).child(TaskApp.getInstance().getCustomerId()).setValue(customer).addOnSuccessListener(new OnSuccessListener<Void>() {
+        FirebaseDatabase.getInstance().getReference(Constants.FirebaseReferences.CUSTOMERS).child(TaskApp.getInstance().getCustomerId()).setValue(TaskApp.getInstance().getCurrentCustomer()).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+                hideSpinner();
                 startActivity(new Intent(EditProfileActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(EditProfileActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -365,9 +376,10 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         if (downloadedPhoto != null) {
-            outState.putString(Constants.LOGO, downloadedPhoto);
+            outState.putString(Constants.LOGO, downloadedPhoto.toString());
         }
         outState.putString(Constants.NAME, nameField.getText().toString());
+        outState.putString(Constants.ADDRESS, addressField.getText().toString());
         super.onSaveInstanceState(outState);
     }
 
@@ -376,6 +388,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         if (savedInstanceState != null) {
             nameField.setText(savedInstanceState.getString(Constants.NAME));
             setupGlide(this, savedInstanceState.getString(Constants.LOGO), logoView);
+            setAddressField(savedInstanceState.getString(Constants.ADDRESS));
         }
         super.onRestoreInstanceState(savedInstanceState);
     }
@@ -431,7 +444,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                         switch (which) {
                             case 0:
                                 if (ActivityCompat.checkSelfPermission(EditProfileActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                                    requestPermissions();
+                                    requestDocumentsPermissions();
                                 } else {
                                     getLogoFromGallery();
                                 }
@@ -446,5 +459,37 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                         }
                     }
                 }).create();
+    }
+
+    private void setOnRegistrationMenuItemVisibility(String name, Uri logo) {
+        if (checkSaveMenuItemExistance()) return;
+        if (isFirstTime) {
+            if (name.length() >= 3 && !Objects.equals(addressField.getText().toString(), getString(R.string.text_choose_location)) && logo != null) {
+                saveMenuItem.setEnabled(true);
+            }
+        }
+    }
+
+    private void setOnLoginMenuItemVisibility(String name) {
+        if (checkSaveMenuItemExistance()) return;
+        if (name.length() >= 3
+                    && !Objects.equals(addressField.getText().toString(), getString(R.string.text_choose_location))
+                    && !addressField.getText().toString().isEmpty()) {
+                saveMenuItem.setEnabled(true);
+            } else {
+                saveMenuItem.setEnabled(false);
+        }
+    }
+
+    private boolean checkSaveMenuItemExistance() {
+        return saveMenuItem == null;
+    }
+
+    private void requestDocumentsPermissions() {
+        ActivityCompat.requestPermissions(EditProfileActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.MANAGE_DOCUMENTS}, Constants.RequestCodes.REQUEST_READ_STORAGE_PERMISSION);
+    }
+
+    private void requestCameraPermissions() {
+        ActivityCompat.requestPermissions(EditProfileActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.RequestCodes.REQUEST_CAMERA_PERMISSION);
     }
 }
