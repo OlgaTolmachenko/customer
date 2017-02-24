@@ -87,13 +87,8 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.profileCollapsingToolbar);
         collapsingToolbar.setTitle("");
 
-        photoFab = (FloatingActionButton) findViewById(R.id.photoFab);
-        logoView = (ImageView) findViewById(R.id.editLogo);
-        nameField = (EditText) findViewById(R.id.companyNameField);
-        addressField = (TextView) findViewById(R.id.addressTV);
-
-        nameField.setBackgroundColor(Color.argb(70, 0, 0, 0));
-        setScroll(nameField);
+        mapWidgets();
+        setUpNameFiled();
 
         if (TaskApp.getInstance().getCurrentCustomer() == null) {
             isFirstTime = true;
@@ -110,6 +105,18 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         addressField.setOnClickListener(this);
 
         setAddressField(null);
+    }
+
+    private void setUpNameFiled() {
+        nameField.setBackgroundColor(Color.argb(70, 0, 0, 0));
+        setScroll(nameField);
+    }
+
+    private void mapWidgets() {
+        photoFab = (FloatingActionButton) findViewById(R.id.photoFab);
+        logoView = (ImageView) findViewById(R.id.editLogo);
+        nameField = (EditText) findViewById(R.id.companyNameField);
+        addressField = (TextView) findViewById(R.id.addressTV);
     }
 
     @NonNull
@@ -226,40 +233,34 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     }
 
     private File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
-        File imagesFolder = new File(Environment.getExternalStorageDirectory(), "TasksCustomer");
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+        File imagesFolder = new File(Environment.getExternalStorageDirectory(), "TaskAppImages");
         imagesFolder.mkdirs();
 
+        File image = new File(imagesFolder, "LOGO_" + timeStamp + ".png");
 
-        File image = File.createTempFile(
-                imageFileName,
-                ".jpg",
-                storageDir
-        );
-
-//        http://stackoverflow.com/questions/12995185/android-taking-photos-and-saving-them-with-a-custom-name-to-a-custom-destinati
         currentPhotoPath = image.getAbsolutePath();
         return image;
     }
 
 
     private void dispatchTakePictureIntent() {
-        String authority = "com.mobidev.taskcompany.fileprovider";
-
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
             File photoFile = null;
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
-                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+                // Error occurred while creating the File
             }
+            // Continue only if the File was successfully created
             if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this, authority, photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                Uri uriSavedImage = Uri.fromFile(photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
                 startActivityForResult(takePictureIntent, Constants.RequestCodes.REQUEST_CAMERA);
             }
         }
