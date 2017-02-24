@@ -6,7 +6,6 @@ public class Constants {
     public static final String ADDRESS = "address";
     public static final String NAME = "name";
     public static final String LOGO = "logo";
-    public static final String LOGO_PLACEHOLDER = "android.resource://com.mobidev.taskcompany/drawable/ic_place";
     public static final String STORAGE_REF = "gs://taskdispatcher-bb18b.appspot.com";
     public static final String IMG = "img/";
     public static final String IMAGE = "image/*";
