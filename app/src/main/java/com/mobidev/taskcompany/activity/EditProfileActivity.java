@@ -1,7 +1,6 @@
 package com.mobidev.taskcompany.activity;
 
 import android.Manifest;
-import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -19,24 +18,16 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Scroller;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.mobidev.taskcompany.R;
 import com.mobidev.taskcompany.TaskApp;
 import com.mobidev.taskcompany.model.Customer;
@@ -48,54 +39,47 @@ import com.mobidev.taskcompany.util.Role;
 import java.io.File;
 import java.util.Objects;
 
-public class EditProfileActivity extends BaseActivity implements View.OnClickListener {
+public class EditProfileActivity extends SaveDataToCloudActivity implements View.OnClickListener {
 
-    private Uri downloadedPhoto;
     private ImageView logoView;
     private EditText nameField;
     private FloatingActionButton photoFab;
     private TextView addressField;
-    private String currentPhotoPath;
     private LatLng location;
     private boolean isFirstTime;
-    private String address;
     private Uri logo;
     private CollapsingToolbarLayout collapsingToolbar;
     private Toolbar toolbar;
     private AppBarLayout appBarLayout;
-
-    private MenuItem saveMenuItem = null;
+    private MenuItem saveMenuItem;
     private CameraHelper cameraHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+        mapWidgets();
         hideProgress();
         setSupportActionBar(toolbar);
         showUpButton();
-        mapWidgets();
         setUpActionBarTitle();
         collapsingToolbar.setTitle("");
         setUpNameFiled();
 
         if (TaskApp.getInstance().getCurrentCustomer() == null) {
             isFirstTime = true;
-        }
-
-        if (!isFirstTime) {
+        } else {
             setupGlide(this, TaskApp.getInstance().getCurrentCustomer().getLogo(), logoView);
             nameField.setText(TaskApp.getInstance().getCurrentCustomer().getName());
             nameField.setSelection(nameField.getText().length());
+            setSaveItemEnabled();
+            setAddressField(TaskApp.getInstance().getCurrentCustomer().getAddress());
         }
 
         nameField.addTextChangedListener(getTextWatcher());
         photoFab.setOnClickListener(this);
         addressField.setOnClickListener(this);
-
         cameraHelper = new CameraHelper(this);
-
         setAddressField(null);
     }
 
@@ -139,8 +123,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
 
             @Override
             public void afterTextChanged(Editable s) {
-                setOnRegistrationMenuItemVisibility(s.toString(), logo);
-                setOnLoginMenuItemVisibility(s.toString());
+                setSaveItemEnabled();
             }
         };
     }
@@ -172,13 +155,14 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         saveMenuItem = menu.findItem(R.id.action_save);
-        setOnLoginMenuItemVisibility(nameField.getText().toString());
+        setSaveItemEnabled();
         return true;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_edit_profile, menu);
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_edit_profile, menu);
         return true;
     }
 
@@ -187,11 +171,22 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         switch (item.getItemId()) {
             case R.id.action_save:
                 showSpinner();
-                if (logo != null) {
-                    sendLogoToStorage(logo);
+
+                if (!isFirstTime) {
+                    TaskApp.getInstance().getCurrentCustomer().setName(nameField.getText().toString());
                 }
-                if (downloadedPhoto == null) {
-                    saveCustomerDataInDB(null);
+
+                if (isEveryFieldFilledIn()) {
+
+                    if (isFirstTime) {
+                        prepareCustomer(logo.toString());
+                    }
+
+                    if (logo != null) {
+                        sendLogoToStorage(logo);
+                    } else {
+                        sendCustomerToDatabase();
+                    }
                 }
                 return true;
             default:
@@ -199,79 +194,39 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
-    private void showSpinner() {
-        showProgress();
-        photoFab.setVisibility(View.GONE);
-        appBarLayout.setVisibility(View.GONE);
-    }
-
-    private void hideSpinner() {
-        hideProgress();
-        hideKeyboard();
-        photoFab.setVisibility(View.VISIBLE);
-        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.editProfileAppBar);
-        appBarLayout.setVisibility(View.VISIBLE);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == Constants.RequestCodes.REQUEST_LIBRARY && resultCode == RESULT_OK) {
-            logo = data.getData();
-            setupGlide(this, logo.toString(), logoView);
-
-        }
-        if (requestCode == Constants.RequestCodes.REQUEST_CAMERA && resultCode == RESULT_OK) {
-            cameraHelper.addPickToGallery();
-            logo = Uri.fromFile(new File(cameraHelper.getPhotoPath()));
-            setupGlide(this, logo.toString(), logoView);
-        }
-
-        if (requestCode == Constants.RequestCodes.REQUEST_LOCATION && resultCode == RESULT_OK) {
-            location = data.getParcelableExtra(Constants.LOCATION);
-            address = data.getStringExtra(Constants.ADDRESS);
-            setAddressField(address);
-            setOnRegistrationMenuItemVisibility(nameField.getText().toString(), logo);
-            setOnLoginMenuItemVisibility(nameField.getText().toString());
-        }
-    }
-
-    private void sendLogoToStorage(Uri logo) {
-        if (logo != null) {
-            showSpinner();
-            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-
-            MimeTypeMap mime = MimeTypeMap.getSingleton();
-            ContentResolver contentResolver = this.getContentResolver();
-            mime.getExtensionFromMimeType(contentResolver.getType(logo));
-
-            StorageReference logoRef = getStorageReference(logo, firebaseStorage, mime, contentResolver);
-
-            UploadTask uploadTask = logoRef.putFile(logo);
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    if (taskSnapshot != null) {
-                        downloadedPhoto = taskSnapshot.getDownloadUrl();
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case Constants.RequestCodes.REQUEST_LIBRARY:
+                    logo = data.getData();
+                    setupGlide(this, logo.toString(), logoView);
+                    if (!isFirstTime) TaskApp.getInstance().getCurrentCustomer().setLogo(logo.toString());
+                    setSaveItemEnabled();
+                    break;
+                case Constants.RequestCodes.REQUEST_CAMERA:
+                    cameraHelper.addPickToGallery();
+                    logo = Uri.fromFile(new File(cameraHelper.getPhotoPath()));
+                    setupGlide(this, logo.toString(), logoView);
+                    setSaveItemEnabled();
+                    break;
+                case Constants.RequestCodes.REQUEST_LOCATION:
+                    location = data.getParcelableExtra(Constants.LOCATION);
+                    String address = data.getStringExtra(Constants.ADDRESS);
+                    setAddressField(address);
+                    if (!isFirstTime) {
+                        TaskApp.getInstance().getCurrentCustomer().setLocation(new TaskLatLng(location.latitude, location.longitude));
+                        TaskApp.getInstance().getCurrentCustomer().setAddress(address);
                     }
-                    saveCustomerDataInDB(downloadedPhoto.toString());
-                    setOnRegistrationMenuItemVisibility(nameField.getText().toString(), downloadedPhoto);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d(Constants.TAG, "onFailure: " + e.getMessage());
-                }
-            });
+                    setSaveItemEnabled();
+                    break;
+            }
         }
     }
 
-    private StorageReference getStorageReference(Uri logo, FirebaseStorage firebaseStorage, MimeTypeMap mime, ContentResolver cR) {
-        return firebaseStorage.getReferenceFromUrl(Constants.STORAGE_REF).child(Constants.IMG + System.currentTimeMillis() + "." + mime.getExtensionFromMimeType(cR.getType(logo)));
-    }
-
-    private void saveCustomerDataInDB(@Nullable String logo) {
+    private void prepareCustomer(@Nullable String logo) {
         if (isFirstTime) {
             Customer customer = new Customer(
                     nameField.getText().toString(),
@@ -279,34 +234,10 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                     Role.CUSTOMER,
                     logo,
                     new TaskLatLng(location.latitude, location.longitude),
-                    getIntent().getStringExtra(Constants.ADDRESS)
+                    addressField.getText().toString()
             );
             TaskApp.getInstance().setCurrentCustomer(customer);
-        } else {
-            TaskApp.getInstance().getCurrentCustomer().setName(nameField.getText().toString());
-
-            if (location != null) {
-                TaskApp.getInstance().getCurrentCustomer().setLocation(new TaskLatLng(location.latitude, location.longitude));
-            }
-            if (logo != null) {
-                TaskApp.getInstance().getCurrentCustomer().setLogo(logo);
-            }
-
-            TaskApp.getInstance().getCurrentCustomer().setAddress(addressField.getText().toString());
         }
-
-        FirebaseDatabase.getInstance().getReference(Constants.FirebaseReferences.CUSTOMERS).child(TaskApp.getInstance().getCustomerId()).setValue(TaskApp.getInstance().getCurrentCustomer()).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                hideSpinner();
-                startActivity(new Intent(EditProfileActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(EditProfileActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override
@@ -335,9 +266,6 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        if (downloadedPhoto != null) {
-            outState.putString(Constants.LOGO, downloadedPhoto.toString());
-        }
         outState.putString(Constants.NAME, nameField.getText().toString());
         outState.putString(Constants.ADDRESS, addressField.getText().toString());
         super.onSaveInstanceState(outState);
@@ -421,27 +349,26 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                 }).create();
     }
 
-    private void setOnRegistrationMenuItemVisibility(String name, Uri logo) {
-        if (checkSaveMenuItemExistance()) return;
+    private void setSaveItemEnabled() {
+        if (isSaveItemNull()) return;
         if (isFirstTime) {
-            if (name.length() >= 3 && !Objects.equals(addressField.getText().toString(), getString(R.string.text_choose_location)) && logo != null) {
-                saveMenuItem.setEnabled(true);
-            }
+            saveMenuItem.setEnabled(false);
+        }
+        if (isEveryFieldFilledIn()) {
+            saveMenuItem.setEnabled(true);
+        } else {
+            saveMenuItem.setEnabled(false);
         }
     }
 
-    private void setOnLoginMenuItemVisibility(String name) {
-        if (checkSaveMenuItemExistance()) return;
-        if (name.length() >= 3
-                    && !Objects.equals(addressField.getText().toString(), getString(R.string.text_choose_location))
-                    && !addressField.getText().toString().isEmpty()) {
-                saveMenuItem.setEnabled(true);
-            } else {
-                saveMenuItem.setEnabled(false);
-        }
+    private boolean isEveryFieldFilledIn() {
+        return nameField.getText().toString().length() >= 3
+                && !Objects.equals(addressField.getText().toString(), getString(R.string.text_choose_location))
+                && !Objects.equals(addressField.getText().toString(), "")
+                && (logo != null || (TaskApp.getInstance().getCurrentCustomer() != null && TaskApp.getInstance().getCurrentCustomer().getLogo() != null));
     }
 
-    private boolean checkSaveMenuItemExistance() {
+    private boolean isSaveItemNull() {
         return saveMenuItem == null;
     }
 

@@ -5,19 +5,19 @@ import android.os.Parcelable;
 
 public class TaskLatLng implements Parcelable {
 
-    private double Latitude;
+    private double latitude;
     private  double longitude;
 
     public TaskLatLng() {
     }
 
     public TaskLatLng(double latitude, double longitude) {
-        Latitude = latitude;
-        this.longitude = longitude;
+            this.latitude = latitude;
+            this.longitude = longitude;
     }
 
     protected TaskLatLng(Parcel in) {
-        Latitude = in.readDouble();
+        latitude = in.readDouble();
         longitude = in.readDouble();
     }
 
@@ -34,11 +34,11 @@ public class TaskLatLng implements Parcelable {
     };
 
     public double getLatitude() {
-        return Latitude;
+        return latitude;
     }
 
     public void setLatitude(double latitude) {
-        Latitude = latitude;
+        this.latitude = latitude;
     }
 
     public double getLongitude() {
@@ -56,7 +56,7 @@ public class TaskLatLng implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeDouble(Latitude);
+        dest.writeDouble(latitude);
         dest.writeDouble(longitude);
     }
 }

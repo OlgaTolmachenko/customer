@@ -34,13 +34,15 @@ import java.util.UUID;
 
 public class CreateTaskActivity extends BaseActivity {
 
-    private TextInputLayout titleLayout;
+//    private TextInputLayout titleLayout;
     private TextInputLayout bodyLayout;
     private TextInputEditText titleField;
     private TextInputEditText bodyField;
     private Spinner taskCategorySpinner;
     private TextView dateField;
     private TextView timeField;
+
+    private TextInputEditText edit;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,13 +51,14 @@ public class CreateTaskActivity extends BaseActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        titleLayout = (TextInputLayout) findViewById(R.id.titleLayout);
+//        titleLayout = (TextInputLayout) findViewById(R.id.titleLayout);
         bodyLayout = (TextInputLayout) findViewById(R.id.bodyLayout);
         titleField = (TextInputEditText) findViewById(R.id.title);
         bodyField = (TextInputEditText) findViewById(R.id.body);
         taskCategorySpinner = (Spinner) findViewById(R.id.taskCategory);
         dateField = (TextView) findViewById(R.id.dateField);
         timeField = (TextView) findViewById(R.id.timeField);
+        edit = (TextInputEditText) findViewById(R.id.edit);
 
         char randomLetter = getRandomLetter();
         titleField.setText(randomLetter + getString(R.string.random_task_title));
@@ -119,8 +122,8 @@ public class CreateTaskActivity extends BaseActivity {
 
                 String taskId = UUID.randomUUID().toString();
 
-                if (!isLessThanThree(titleField.getText().toString(), titleLayout)
-                        && !isLessThanThree(bodyField.getText().toString(), bodyLayout)) {
+                if (!isLessThanThree(titleField.getText().toString())
+                        && !isLessThanThree(bodyField.getText().toString())) {
                     Task currentTask = new Task(
                             taskId,
                             titleField.getText().toString(),
@@ -159,11 +162,11 @@ public class CreateTaskActivity extends BaseActivity {
         field.setMovementMethod(new ScrollingMovementMethod());
     }
 
-    private boolean isLessThanThree(String input, TextInputLayout inputLayout) {
+    private boolean isLessThanThree(String input) {
         boolean isLess;
         if (input.length() < 3) {
-            inputLayout.setErrorEnabled(true);
-            inputLayout.setError(getString(R.string.text_length_warning));
+//            inputLayout.setErrorEnabled(true);
+//            inputLayout.setError(getString(R.string.text_length_warning));
             isLess = true;
         } else {
             isLess = false;

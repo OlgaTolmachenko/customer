@@ -56,7 +56,9 @@ public class Customer {
     }
 
     public void setLogo(String logo) {
-        this.logo = logo;
+        if (logo != null) {
+            this.logo = logo;
+        }
     }
 
     public TaskLatLng getLocation() {
@@ -64,7 +66,9 @@ public class Customer {
     }
 
     public void setLocation(TaskLatLng location) {
-        this.location = location;
+        if (location != null) {
+            this.location = location;
+        }
     }
 
     public String getAddress() {
