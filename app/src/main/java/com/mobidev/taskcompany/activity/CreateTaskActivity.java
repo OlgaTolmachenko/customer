@@ -7,14 +7,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Scroller;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -34,7 +31,7 @@ import java.util.UUID;
 
 public class CreateTaskActivity extends BaseActivity {
 
-//    private TextInputLayout titleLayout;
+    private TextInputLayout titleLayout;
     private TextInputLayout bodyLayout;
     private TextInputEditText titleField;
     private TextInputEditText bodyField;
@@ -42,30 +39,16 @@ public class CreateTaskActivity extends BaseActivity {
     private TextView dateField;
     private TextView timeField;
 
-    private TextInputEditText edit;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_task);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-//        titleLayout = (TextInputLayout) findViewById(R.id.titleLayout);
-        bodyLayout = (TextInputLayout) findViewById(R.id.bodyLayout);
-        titleField = (TextInputEditText) findViewById(R.id.title);
-        bodyField = (TextInputEditText) findViewById(R.id.body);
-        taskCategorySpinner = (Spinner) findViewById(R.id.taskCategory);
-        dateField = (TextView) findViewById(R.id.dateField);
-        timeField = (TextView) findViewById(R.id.timeField);
-        edit = (TextInputEditText) findViewById(R.id.edit);
+        mapWidgets();
 
         char randomLetter = getRandomLetter();
         titleField.setText(randomLetter + getString(R.string.random_task_title));
         bodyField.setText(getString(R.string.random_task_body));
-        setTitleFieldScroll();
-        setBodyFieldScroll();
-
         taskCategorySpinner.setAdapter(getCategoryAdapter());
 
         dateField.setText(CurrentDateAndTimeFormatUtil.getCurrentDateFormatted());
@@ -82,14 +65,14 @@ public class CreateTaskActivity extends BaseActivity {
         timeChooser.setOnClickListener(chooserUtil.setTimeChooserClickListener(myCalendar, timeSetListener));
     }
 
-    private void setBodyFieldScroll() {
-        int bodyMaxLines = 12;
-        setScroll(bodyField, bodyMaxLines);
-    }
-
-    private void setTitleFieldScroll() {
-        int titleMaxLines = 5;
-        setScroll(titleField, titleMaxLines);
+    private void mapWidgets() {
+        titleLayout = (TextInputLayout) findViewById(R.id.titleLayout);
+        bodyLayout = (TextInputLayout) findViewById(R.id.bodyLayout);
+        titleField = (TextInputEditText) findViewById(R.id.title);
+        bodyField = (TextInputEditText) findViewById(R.id.body);
+        taskCategorySpinner = (Spinner) findViewById(R.id.taskCategory);
+        dateField = (TextView) findViewById(R.id.dateField);
+        timeField = (TextView) findViewById(R.id.timeField);
     }
 
     @NonNull
@@ -122,8 +105,8 @@ public class CreateTaskActivity extends BaseActivity {
 
                 String taskId = UUID.randomUUID().toString();
 
-                if (!isLessThanThree(titleField.getText().toString())
-                        && !isLessThanThree(bodyField.getText().toString())) {
+                if (!isLessThanThree(titleField.getText().toString(), bodyLayout)
+                        && !isLessThanThree(bodyField.getText().toString(), titleLayout)) {
                     Task currentTask = new Task(
                             taskId,
                             titleField.getText().toString(),
@@ -155,18 +138,11 @@ public class CreateTaskActivity extends BaseActivity {
         }
     }
 
-    private void setScroll(EditText field, int maxLines) {
-        field.setScroller(new Scroller(this));
-        field.setMaxLines(maxLines);
-        field.setVerticalScrollBarEnabled(true);
-        field.setMovementMethod(new ScrollingMovementMethod());
-    }
-
-    private boolean isLessThanThree(String input) {
+    private boolean isLessThanThree(String input, TextInputLayout inputLayout) {
         boolean isLess;
         if (input.length() < 3) {
-//            inputLayout.setErrorEnabled(true);
-//            inputLayout.setError(getString(R.string.text_length_warning));
+            inputLayout.setErrorEnabled(true);
+            inputLayout.setError(getString(R.string.text_length_warning));
             isLess = true;
         } else {
             isLess = false;

@@ -97,7 +97,6 @@ public class EditProfileActivity extends SaveDataToCloudActivity implements View
 
     private void setUpNameFiled() {
         nameField.setBackgroundColor(Color.argb(70, 0, 0, 0));
-        setScroll(nameField);
     }
 
     private void mapWidgets() {
@@ -145,12 +144,6 @@ public class EditProfileActivity extends SaveDataToCloudActivity implements View
             addressField.setText(address);
         }
     }
-
-    private void setScroll(EditText field) {
-        field.setScroller(new Scroller(this));
-        field.setMovementMethod(new ScrollingMovementMethod());
-    }
-
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
