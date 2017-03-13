@@ -17,14 +17,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Scroller;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -130,7 +128,7 @@ public class EditProfileActivity extends SaveDataToCloudActivity implements View
     @Override
     protected void onPause() {
         super.onPause();
-        hideSpinner();
+        hideProgressWithFabAndAppbar();
     }
 
     private void setAddressField(String address) {
@@ -163,7 +161,7 @@ public class EditProfileActivity extends SaveDataToCloudActivity implements View
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-                showSpinner();
+                showProgressWithFabAndAppbar();
 
                 if (!isFirstTime) {
                     TaskApp.getInstance().getCurrentCustomer().setName(nameField.getText().toString());

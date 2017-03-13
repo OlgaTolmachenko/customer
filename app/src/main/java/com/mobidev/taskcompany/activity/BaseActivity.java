@@ -18,52 +18,57 @@ import com.mobidev.taskcompany.R;
 
 abstract class BaseActivity  extends AppCompatActivity {
 
-    private ProgressBar progress;
-    private FrameLayout whiteScreen;
+    private ProgressBar progressBar;
+    private FrameLayout progressBarBackground;
     private FloatingActionButton photoFab;
     private AppBarLayout appBarLayout;
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
-        progress = (ProgressBar) findViewById(R.id.taskProgressBar);
-        whiteScreen = (FrameLayout) findViewById(R.id.whiteScreen);
+        initViews();
+    }
+
+    private void initViews() {
+        progressBar = (ProgressBar) findViewById(R.id.taskProgressBar);
+        progressBarBackground = (FrameLayout) findViewById(R.id.whiteScreen);
         photoFab = (FloatingActionButton) findViewById(R.id.photoFab);
         appBarLayout = (AppBarLayout) findViewById(R.id.editProfileAppBar);
     }
 
     protected void showProgress() {
-        whiteScreen.setVisibility(View.VISIBLE);
-        progress.setVisibility(View.VISIBLE);
+        progressBarBackground.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     protected void hideProgress() {
-        whiteScreen.setVisibility(View.GONE);
-        progress.setVisibility(View.GONE);
+        progressBarBackground.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
     }
 
-    protected void hideKeyboard() {
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
-
-    protected void showSpinner() {
+    protected void showProgressWithFabAndAppbar() {
         showProgress();
         photoFab.setVisibility(View.GONE);
         appBarLayout.setVisibility(View.GONE);
     }
 
-    protected void hideSpinner() {
+    protected void hideProgressWithFabAndAppbar() {
         hideProgress();
         hideKeyboard();
         photoFab.setVisibility(View.VISIBLE);
         appBarLayout.setVisibility(View.VISIBLE);
     }
 
-    public void setupGlide(Activity context, String logoUri, ImageView view) {
+    protected void hideKeyboard() {
+        View focusedView = getCurrentFocus();
+        if (focusedView == null) {
+            return;
+        }
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
+    }
+
+    public static void setupGlide(Activity context, String logoUri, ImageView view) {
         Glide.with(context)
                 .load(logoUri)
                 .centerCrop()

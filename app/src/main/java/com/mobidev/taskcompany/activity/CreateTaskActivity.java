@@ -20,7 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.mobidev.taskcompany.R;
 import com.mobidev.taskcompany.TaskApp;
 import com.mobidev.taskcompany.model.Task;
-import com.mobidev.taskcompany.util.ChooserUtil;
+import com.mobidev.taskcompany.util.DateTimeChooser;
 import com.mobidev.taskcompany.util.Constants;
 import com.mobidev.taskcompany.util.CurrentDateAndTimeFormatUtil;
 import com.mobidev.taskcompany.util.TaskStatus;
@@ -35,7 +35,7 @@ public class CreateTaskActivity extends BaseActivity {
     private TextInputLayout bodyLayout;
     private TextInputEditText titleField;
     private TextInputEditText bodyField;
-    private Spinner taskCategorySpinner;
+    private Spinner categorySpinner;
     private TextView dateField;
     private TextView timeField;
 
@@ -43,36 +43,37 @@ public class CreateTaskActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_task);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mapWidgets();
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        initViews();
 
-        char randomLetter = getRandomLetter();
-        titleField.setText(randomLetter + getString(R.string.random_task_title));
-        bodyField.setText(getString(R.string.random_task_body));
-        taskCategorySpinner.setAdapter(getCategoryAdapter());
-
-        dateField.setText(CurrentDateAndTimeFormatUtil.getCurrentDateFormatted());
-        timeField.setText(CurrentDateAndTimeFormatUtil.getCurrentTimeFormatted());
-
-        ChooserUtil chooserUtil = new ChooserUtil(this, timeField, dateField);
+        DateTimeChooser dateTimeChooser = new DateTimeChooser(this, timeField, dateField);
         final Calendar myCalendar = Calendar.getInstance();
-        final DatePickerDialog.OnDateSetListener dateSetListener = chooserUtil.getOnDateSetListener(myCalendar);
-        final TimePickerDialog.OnTimeSetListener timeSetListener = chooserUtil.getOnTimeSetListener(myCalendar);
+        final DatePickerDialog.OnDateSetListener dateSetListener = dateTimeChooser.getOnDateSetListener(myCalendar);
+        final TimePickerDialog.OnTimeSetListener timeSetListener = dateTimeChooser.getOnTimeSetListener(myCalendar);
 
         LinearLayout dateChooser = (LinearLayout) findViewById(R.id.dateChooser);
         LinearLayout timeChooser = (LinearLayout) findViewById(R.id.timeChooser);
-        dateChooser.setOnClickListener(chooserUtil.setDateChooserClickListener(myCalendar, dateSetListener));
-        timeChooser.setOnClickListener(chooserUtil.setTimeChooserClickListener(myCalendar, timeSetListener));
+        dateChooser.setOnClickListener(dateTimeChooser.setDateChooserClickListener(myCalendar, dateSetListener));
+        timeChooser.setOnClickListener(dateTimeChooser.setTimeChooserClickListener(myCalendar, timeSetListener));
     }
 
-    private void mapWidgets() {
+    private void initViews() {
         titleLayout = (TextInputLayout) findViewById(R.id.titleLayout);
         bodyLayout = (TextInputLayout) findViewById(R.id.bodyLayout);
         titleField = (TextInputEditText) findViewById(R.id.title);
         bodyField = (TextInputEditText) findViewById(R.id.body);
-        taskCategorySpinner = (Spinner) findViewById(R.id.taskCategory);
+        categorySpinner = (Spinner) findViewById(R.id.taskCategory);
         dateField = (TextView) findViewById(R.id.dateField);
         timeField = (TextView) findViewById(R.id.timeField);
+
+        char randomLetter = getRandomLetter();
+        titleField.setText(randomLetter + getString(R.string.random_task_title));
+        bodyField.setText(getString(R.string.random_task_body));
+        categorySpinner.setAdapter(getCategoryAdapter());
+        dateField.setText(CurrentDateAndTimeFormatUtil.getCurrentDateFormatted());
+        timeField.setText(CurrentDateAndTimeFormatUtil.getCurrentTimeFormatted());
     }
 
     @NonNull
@@ -107,31 +108,33 @@ public class CreateTaskActivity extends BaseActivity {
 
                 if (!isLessThanThree(titleField.getText().toString(), bodyLayout)
                         && !isLessThanThree(bodyField.getText().toString(), titleLayout)) {
-                    Task currentTask = new Task(
-                            taskId,
-                            titleField.getText().toString(),
-                            taskCategorySpinner.getSelectedItem().toString(),
-                            bodyField.getText().toString(),
-                            CurrentDateAndTimeFormatUtil.getCurrentDateAndTimeFormatted(),
-                            getFullDueDateAndTime(),
-                            TaskApp.getInstance().getCurrentCustomer(),
-                            TaskStatus.NEW
-                    );
-
-                    TaskApp.getInstance().setTaskList(currentTask);
-
-                    hideKeyboard();
-                    showProgress();
-
-                    FirebaseDatabase.getInstance().getReference().child(Constants.FirebaseReferences.TASKS).child(taskId).setValue(currentTask).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            hideProgress();
-                        }
-                    });
-
-                    finish();
+                    return false;
                 }
+
+                Task currentTask = new Task(
+                        taskId,
+                        titleField.getText().toString(),
+                        categorySpinner.getSelectedItem().toString(),
+                        bodyField.getText().toString(),
+                        CurrentDateAndTimeFormatUtil.getCurrentDateAndTimeFormatted(),
+                        getFullDueDateAndTime(),
+                        TaskApp.getInstance().getCurrentCustomer(),
+                        TaskStatus.NEW
+                );
+
+                TaskApp.getInstance().setTaskList(currentTask);
+
+                hideKeyboard();
+                showProgress();
+
+                FirebaseDatabase.getInstance().getReference().child(Constants.FirebaseReferences.TASKS).child(taskId).setValue(currentTask).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        hideProgress();
+                    }
+                });
+
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

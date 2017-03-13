@@ -15,13 +15,13 @@ import java.util.Calendar;
  * Created by Olga Tolmachenko on 22.02.17.
  */
 
-public class ChooserUtil {
+public class DateTimeChooser {
 
     private Activity context;
     private TextView timeField;
     private TextView dateField;
 
-    public ChooserUtil(Activity context, TextView timeField, TextView dateField) {
+    public DateTimeChooser(Activity context, TextView timeField, TextView dateField) {
         this.context = context;
         this.timeField = timeField;
         this.dateField = dateField;

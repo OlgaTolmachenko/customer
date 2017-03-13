@@ -35,7 +35,7 @@ public class SaveDataToCloudActivity extends BaseActivity {
     }
 
     protected Uri sendLogoToStorage(final Uri logo) {
-            showSpinner();
+            showProgressWithFabAndAppbar();
             FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
 
             MimeTypeMap mime = MimeTypeMap.getSingleton();
@@ -71,7 +71,7 @@ public class SaveDataToCloudActivity extends BaseActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        hideSpinner();
+                        hideProgressWithFabAndAppbar();
                         startActivity(new Intent(SaveDataToCloudActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                     }
                 })
